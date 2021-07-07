@@ -10,6 +10,9 @@ import java.text.DecimalFormat;
 
 import java.util.ArrayList;
 
+//TODO: User clicks button to stop
+//TODO: User can choose what interval to display
+
 public class Main {
 	
 	static ArrayList<Double> temperature = new ArrayList<Double>();
@@ -73,11 +76,9 @@ public class Main {
 				maxTemp = getMax(time1);
 				minTemp = getMin(time1);
 				temp = maxTemp;
-				System.out.println();
 				scale = ((maxTemp-minTemp)/7);
 
-				System.out.println(scale);
-		
+
 				for(int i =0; i<=54; i+= 9) {
 					lcd.drawLine(20,i,22,i);
 					lcd.writeText(LCDFont.DIMENSIONS_5X8, 0, i, Double.toString(Double.valueOf(df.format(temp))));
@@ -87,36 +88,37 @@ public class Main {
 				lcd.flush();
 				
 				
+				double range = maxTemp - minTemp;
 				//Changes the pixel location of the temp based on min and max data points
 				for(int i =0; i<10; i++) {
-					
-					int range = (int) Math.round(maxTemp - minTemp);
-					int pixel = (int)Math.round(53 - (((temperature.get(time1 + i)-minTemp)/range)*53));
-					//This needs to change
-					pixelTemp.add(pixel);
-					time++;
+					double pixel = 54-(temperature.get(time1 + i)-minTemp)/range*54;
+					pixelTemp.add((int)Math.round(pixel));
 				}
 				
+				
+			
 				//Temp 2 gives the pixel for the first time data point
-				int temp2 = 30;
+				int temp2 = 20;
+				
 				//Graphs data
 				for(int i = 0; i<10; i++) {
 					
-					//Make this a dot instread of rectangle
-					lcd.drawRect(temp2, pixelTemp.get(i + time1), temp2+1, pixelTemp.get(i + time1)+1, false, false);
+					//Make this a dot instead of rectangle
+					//lcd.drawPixel(temp2, pixelTemp.get(i), LCDPixelState.ON);
 					if(i >0)
-						lcd.drawLine(temp2-10, pixelTemp.get(i + time1-1), temp2, pixelTemp.get(i+time1));
+						lcd.drawLine(temp2-10, pixelTemp.get(i -1), temp2, pixelTemp.get(i));
 				
 					temp2 += 10;
-				
 				}
 				
+				pixelTemp.clear();
 				lcd.flush();
 				Thread.sleep(500);
 				
 				//Changes the values on x-axis as time changes
 				time1++;
 				time = time1 + 1;
+					
 			
 			}
 			
@@ -124,26 +126,7 @@ public class Main {
 		}
 		
 		
-		/*
-		 * 
-		 *Displays max and min temperature on screen
-		int counter = 0;
-		int max = temperature.get(counter);
-		int min = temperature.get(counter);
-		
-		for(int i = counter; i < counter +10; i++) {
-			
-			if(temperature.get(i) > max)
-				max = temperature.get(i);
-			if(temperature.get(i) < min)
-				min = temperature.get(i);
-		}
-		
-		System.out.println("The max temp is: " + max);
-		System.out.println("The min temp is: " + min);
-		
-		
-		*/
+		//Diplsay Max and Min on Screen
 		
 	}
 	
@@ -164,6 +147,10 @@ public class Main {
 	public static double getMin(int counter) {
 		
 		double min = temperature.get(counter);
+		
+		for(int i = counter; i < counter + 10; i++)
+			if(temperature.get(i) < min)
+				min = temperature.get(i);
 		
 		return min;
 	}
