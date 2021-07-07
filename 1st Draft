@@ -23,9 +23,10 @@ public class Main {
 		
 		//This initializes the graph
 		
-		lcd.drawLine(17, 0, 17, 54);
-		lcd.drawLine(17, 54, 127, 54);
+		lcd.drawLine(20, 0, 20, 54);
+		lcd.drawLine(20, 54, 127, 54);
 		
+		lcd.flush();
 		//Test generating data
 		/*
 		for(int i =0; i<20; i++) {
@@ -43,36 +44,36 @@ public class Main {
 		double maxTemp;
 		double minTemp;
 		
+		System.out.println("Start");
+		
 		//Displays the graph on screen
 		while(true) {
 			
-			lcd.drawRect(18, 0, 127, 53, true, true);
-			lcd.flush();
+			lcd.drawRect(21, 0, 127, 53, true, true);
 			
-			temperature.add(temperatureSensor.getTemperature());
+			//Rounds off temperature to nearest tenth
+			temperature.add((double)Math.round(temperatureSensor.getTemperature() *10)/10);
 			
 			if(temperature.size() > 10) {
 			
 				//This changes the values on the x-axis as time progresses
-				for(int i =27; i<127; i+= 10){
-					lcd.drawLine(i,52,i,54);
+				for(int i =30; i<127; i+= 10){
+					lcd.drawLine(i,54,i,56);
 					lcd.writeText(LCDFont.DIMENSIONS_5X8, i-3, 56, time);
 					int temp1 = Integer.valueOf(time);
 					temp1 += 1;
 					time = String.valueOf(temp1);
 				}
 				
-				
 				//Changes the y-axis based on the current data points (auto-scaling)
-				// Round to 1 decimal place
-				//Shift the y axis slightly over
 				maxTemp = getMax(time1);
 				minTemp = getMin(time1);
 				temp = String.valueOf(maxTemp);
-				scale = (maxTemp - minTemp)/6;
+				scale = (double)(Math.round((maxTemp - minTemp)/7)*10)/10;
+				System.out.println(scale);
 		
-				for(int i =0; i<54; i+= 9) {
-					lcd.drawLine(8,i,12,i);
+				for(int i =0; i<=54; i+= 9) {
+					lcd.drawLine(20,i,22,i);
 					lcd.writeText(LCDFont.DIMENSIONS_5X8, 0, i, temp);
 					double temp1 = Double.valueOf(temp);
 					temp1 -= scale;
@@ -83,7 +84,7 @@ public class Main {
 				//Temp 2 gives the pixel for the first time data point
 				int temp2 = 10;
 				//Graphs data
-				for(int i = 0; i<12; i++) {
+				for(int i = 0; i<10; i++) {
 					
 					lcd.drawRect(temp2, pixelTemp.get(i + time1), temp2+1, pixelTemp.get(i + time1)+1, false, false);
 					if(i >0)
