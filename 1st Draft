@@ -58,13 +58,13 @@ public class Main {
 			lcd.drawRect(21, 0, 127, 53, true, true);
 			
 			//Rounds off temperature to nearest tenth
-			temperature.add(Double.valueOf(df.format(temperatureSensor.getTemperature())));
+			temperature.add(temperatureSensor.getTemperature());
 			
 			if(temperature.size() > 10) {
 			
 				//This changes the values on the x-axis as time progresses
 				for(int i =30; i<127; i+= 10){
-					lcd.drawLine(i,54,i,56);
+					lcd.drawLine(i,52,i,54);
 					lcd.writeText(LCDFont.DIMENSIONS_5X8, i-3, 56, Integer.toString(time));
 					time++;
 				}
@@ -74,22 +74,27 @@ public class Main {
 				minTemp = getMin(time1);
 				temp = maxTemp;
 				System.out.println();
-				scale = (Double.valueOf(df.format((maxTemp-minTemp)/7)));
+				scale = ((maxTemp-minTemp)/7);
 
 				System.out.println(scale);
-				System.out.println(temp);
 		
 				for(int i =0; i<=54; i+= 9) {
 					lcd.drawLine(20,i,22,i);
-					lcd.writeText(LCDFont.DIMENSIONS_5X8, 0, i, Double.toString(temp));
+					lcd.writeText(LCDFont.DIMENSIONS_5X8, 0, i, Double.toString(Double.valueOf(df.format(temp))));
 					temp -= scale;
 				}
 				
-				
 				lcd.flush();
 				
+				
+				//Changes the pixel location of the temp based on min and max data points
+				for(int i =0; i<10; i++) {
+					
+					
+				}
+				
 				//Temp 2 gives the pixel for the first time data point
-				int temp2 = 10;
+				int temp2 = 30;
 				//Graphs data
 				for(int i = 0; i<10; i++) {
 					
