@@ -1,0 +1,154 @@
+package LCDGraphing;
+
+import com.phidget22.LCD;
+import com.phidget22.LCDFont;
+import com.phidget22.LCDPixelState;
+import com.phidget22.TemperatureSensor;
+
+import java.util.ArrayList;
+
+public class Main {
+	
+	static ArrayList<Double> temperature = new ArrayList<Double>();
+	static ArrayList<Integer> pixelTemp = new ArrayList<Integer>();
+
+	
+	public static void main(String args[]) throws Exception{
+		
+		LCD lcd = new LCD();
+		lcd.open(1000);
+		
+		TemperatureSensor temperatureSensor = new TemperatureSensor();
+		temperatureSensor.open(1000);
+		
+		//This initializes the graph
+		
+		lcd.drawLine(17, 0, 17, 54);
+		lcd.drawLine(17, 54, 127, 54);
+		
+		//Test generating data
+		/*
+		for(int i =0; i<20; i++) {
+			
+			temperature.add((Math.random() * (38-21) + 20));
+			double pixel = 54 - 54*(double)(temperature.get(i)-20)/18;
+			pixelTemp.add((int)pixel);
+		}
+		*/
+		//Setting up some variables used to display graph
+		String time = "1";
+		String temp;
+		int time1 = 0;
+		double scale;
+		double maxTemp;
+		double minTemp;
+		
+		//Displays the graph on screen
+		while(true) {
+			
+			lcd.drawRect(18, 0, 127, 53, true, true);
+			lcd.flush();
+			
+			temperature.add(temperatureSensor.getTemperature());
+			
+			if(temperature.size() > 10) {
+			
+				//This changes the values on the x-axis as time progresses
+				for(int i =27; i<127; i+= 10){
+					lcd.drawLine(i,52,i,54);
+					lcd.writeText(LCDFont.DIMENSIONS_5X8, i-3, 56, time);
+					int temp1 = Integer.valueOf(time);
+					temp1 += 1;
+					time = String.valueOf(temp1);
+				}
+				
+				
+				//Changes the y-axis based on the current data points (auto-scaling)
+				// Round to 1 decimal place
+				//Shift the y axis slightly over
+				maxTemp = getMax(time1);
+				minTemp = getMin(time1);
+				temp = String.valueOf(maxTemp);
+				scale = (maxTemp - minTemp)/6;
+		
+				for(int i =0; i<54; i+= 9) {
+					lcd.drawLine(8,i,12,i);
+					lcd.writeText(LCDFont.DIMENSIONS_5X8, 0, i, temp);
+					double temp1 = Double.valueOf(temp);
+					temp1 -= scale;
+					temp = String.valueOf(temp1);
+				}
+				lcd.flush();
+				
+				//Temp 2 gives the pixel for the first time data point
+				int temp2 = 10;
+				//Graphs data
+				for(int i = 0; i<12; i++) {
+					
+					lcd.drawRect(temp2, pixelTemp.get(i + time1), temp2+1, pixelTemp.get(i + time1)+1, false, false);
+					if(i >0)
+						lcd.drawLine(temp2-10, pixelTemp.get(i + time1-1), temp2, pixelTemp.get(i+time1));
+				
+					temp2 += 10;
+				
+				}
+				
+				lcd.flush();
+				Thread.sleep(500);
+				
+				time1++;
+				//Changes the values on x-axis as time changes
+				time = String.valueOf(time1+1);
+			
+			}
+			
+			Thread.sleep(350);
+	
+		}
+		
+		
+		/*
+		 * 
+		 *Displays max and min temperature on screen
+		int counter = 0;
+		int max = temperature.get(counter);
+		int min = temperature.get(counter);
+		
+		for(int i = counter; i < counter +10; i++) {
+			
+			if(temperature.get(i) > max)
+				max = temperature.get(i);
+			if(temperature.get(i) < min)
+				min = temperature.get(i);
+		}
+		
+		System.out.println("The max temp is: " + max);
+		System.out.println("The min temp is: " + min);
+		
+		
+		*/
+		
+	}
+	
+	public static double getMax(int counter) {
+		
+		double max = 0;
+		
+		for(int i = counter; i < counter +10; i++) {
+					
+			if(temperature.get(i) > max)
+				max = temperature.get(i);
+		}
+		
+		return max;
+		
+	}
+	 
+	public static double getMin(int counter) {
+		
+		double min = temperature.get(counter);
+		
+		return min;
+	}
+
+}
