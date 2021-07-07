@@ -4,6 +4,9 @@ import com.phidget22.LCD;
 import com.phidget22.LCDFont;
 import com.phidget22.LCDPixelState;
 import com.phidget22.TemperatureSensor;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 
 import java.util.ArrayList;
 
@@ -11,17 +14,20 @@ public class Main {
 	
 	static ArrayList<Double> temperature = new ArrayList<Double>();
 	static ArrayList<Integer> pixelTemp = new ArrayList<Integer>();
+	private static DecimalFormat df = new DecimalFormat("0.0");
 
 	
 	public static void main(String args[]) throws Exception{
 		
+		//Initializes Sensors
 		LCD lcd = new LCD();
 		lcd.open(1000);
 		
 		TemperatureSensor temperatureSensor = new TemperatureSensor();
 		temperatureSensor.open(1000);
 		
-		//This initializes the graph
+		
+		//This initializes the graph axis
 		
 		lcd.drawLine(20, 0, 20, 54);
 		lcd.drawLine(20, 54, 127, 54);
@@ -37,9 +43,9 @@ public class Main {
 		}
 		*/
 		//Setting up some variables used to display graph
-		String time = "1";
-		String temp;
-		int time1 = 0;
+		int time = 1;
+		int time1 = 1;
+		Double temp;
 		double scale;
 		double maxTemp;
 		double minTemp;
@@ -52,33 +58,34 @@ public class Main {
 			lcd.drawRect(21, 0, 127, 53, true, true);
 			
 			//Rounds off temperature to nearest tenth
-			temperature.add((double)Math.round(temperatureSensor.getTemperature() *10)/10);
+			temperature.add(Double.valueOf(df.format(temperatureSensor.getTemperature())));
 			
 			if(temperature.size() > 10) {
 			
 				//This changes the values on the x-axis as time progresses
 				for(int i =30; i<127; i+= 10){
 					lcd.drawLine(i,54,i,56);
-					lcd.writeText(LCDFont.DIMENSIONS_5X8, i-3, 56, time);
-					int temp1 = Integer.valueOf(time);
-					temp1 += 1;
-					time = String.valueOf(temp1);
+					lcd.writeText(LCDFont.DIMENSIONS_5X8, i-3, 56, Integer.toString(time));
+					time++;
 				}
 				
 				//Changes the y-axis based on the current data points (auto-scaling)
 				maxTemp = getMax(time1);
 				minTemp = getMin(time1);
-				temp = String.valueOf(maxTemp);
-				scale = (double)(Math.round((maxTemp - minTemp)/7)*10)/10;
+				temp = maxTemp;
+				System.out.println();
+				scale = (Double.valueOf(df.format((maxTemp-minTemp)/7)));
+
 				System.out.println(scale);
+				System.out.println(temp);
 		
 				for(int i =0; i<=54; i+= 9) {
 					lcd.drawLine(20,i,22,i);
-					lcd.writeText(LCDFont.DIMENSIONS_5X8, 0, i, temp);
-					double temp1 = Double.valueOf(temp);
-					temp1 -= scale;
-					temp = String.valueOf(temp1);
+					lcd.writeText(LCDFont.DIMENSIONS_5X8, 0, i, Double.toString(temp));
+					temp -= scale;
 				}
+				
+				
 				lcd.flush();
 				
 				//Temp 2 gives the pixel for the first time data point
@@ -97,9 +104,9 @@ public class Main {
 				lcd.flush();
 				Thread.sleep(500);
 				
-				time1++;
 				//Changes the values on x-axis as time changes
-				time = String.valueOf(time1+1);
+				time1++;
+				time = time1;;
 			
 			}
 			
