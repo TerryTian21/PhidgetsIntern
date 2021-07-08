@@ -6,11 +6,12 @@ import com.phidget22.LCDPixelState;
 import com.phidget22.TemperatureSensor;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-
+import java.util.Scanner;
 
 import java.util.ArrayList;
 
 //TODO: Allow users to determine how many data points they want to display at one time
+//TODO: Allow users to view a certain portion of the graph once they click stop using the button 
 
 public class Main {
 	
@@ -20,16 +21,19 @@ public class Main {
 
 	public static void main(String args[]) throws Exception{
 		
-		//Initializes Sensors
+		Scanner input = new Scanner(System.in);
+		int data;
+		System.out.println("How many data points do you want to display at one time");
+		data = input.nextInt();
+		
+		//Initializes Sensor and Display
 		LCD lcd = new LCD();
 		lcd.open(1000);
-		
 		TemperatureSensor temperatureSensor = new TemperatureSensor();
 		temperatureSensor.open(1000);
 		
 		
 		//This initializes the graph axis
-		
 		lcd.drawLine(20, 11, 20, 55);
 		lcd.drawLine(20, 55, 127, 55);
 		lcd.flush();
@@ -124,7 +128,7 @@ public class Main {
 
 			}
 			
-			Thread.sleep(100);
+			Thread.sleep(300);
 		}
 
 	}
