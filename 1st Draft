@@ -10,8 +10,7 @@ import java.text.DecimalFormat;
 
 import java.util.ArrayList;
 
-//TODO: Custom Font sizing
-//TODO: Display at different time and display with different sizes set
+//TODO: Allow users to determine how many data points they want to display at one time
 
 public class Main {
 	
@@ -47,7 +46,7 @@ public class Main {
 		
 		//Setting up some variables used to display graph
 		int time = 1;
-		int time1 = 0;
+		int counter = 0;
 		Double temp;
 		double scale;
 		double maxTemp;
@@ -60,16 +59,17 @@ public class Main {
 			
 			lcd.drawRect(21, 11, 127, 54, true, true);
 			
-			//Rounds off temperature to nearest tenth
+			//Gets temperature from input
 			temperature.add(temperatureSensor.getTemperature());
 			
 			lcd.drawRect(0, 0, 50, 10, false, false);
 			lcd.drawRect(55, 0, 105, 10, false, false);
 			
+			//Waits for at least 11 data points to be present, so graph can be shown
 			if(temperature.size() > 11) {
 				
-				maxTemp = getMax(time1);
-				minTemp = getMin(time1);
+				maxTemp = getMax(counter);
+				minTemp = getMin(counter);
 				
 				//Writes Max and Min Temp
 				lcd.writeText(LCDFont.DIMENSIONS_5X8, 1, 1, "Max: " + String.valueOf(df.format(maxTemp)));
@@ -98,7 +98,7 @@ public class Main {
 				
 				//Changes the pixel location of the temp based on min and max data points
 				for(int i =0; i<11; i++) {
-					double pixel = 54-(temperature.get(time1 + i)-minTemp)/range*43;
+					double pixel = 54-(temperature.get(counter + i)-minTemp)/range*43;
 					pixelTemp.add((int)Math.round(pixel));
 				}
 							
@@ -119,12 +119,12 @@ public class Main {
 				lcd.flush();
 				
 				//Changes the values on x-axis as time changes
-				time1++;
-				time = time1 + 1;
+				counter++;
+				time = counter + 1;
 
 			}
 			
-			Thread.sleep(350);
+			Thread.sleep(100);
 		}
 
 	}
