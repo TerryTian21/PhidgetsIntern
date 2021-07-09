@@ -1,7 +1,6 @@
 package LCD;
 
 import java.util.ArrayList;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -24,16 +23,26 @@ public class LCDPlot {
     double minTemp = 0;
     LCD lcd;
     boolean recordData;
+    Record writeData;
+    
+    public LCDPlot() {
+    	
+    }
 
     public LCDPlot(int dataPoints, boolean recordData) throws PhidgetException{
+    	
     	numPoints = dataPoints;
     	lcd = new LCD();
     	lcd.open(1000);
     	this.recordData = recordData;
+    	if(recordData)
+    		writeData = new Record();
 	}
     
 	public void start() throws PhidgetException, IOException{
 
+		if(recordData)
+			writeData.writeValue();
     	if(data.size()>numPoints) {
     		clear();
     		LCD_Init();
@@ -156,6 +165,43 @@ public class LCDPlot {
 		return min;
 	}	
 	
+	class Record extends LCDPlot {
+
+		String name;
+		
+		public Record() {
+			
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+			LocalDateTime now = LocalDateTime.now();  
+			name = dtf.format(now);
+			name = name.replace("/", "_");
+			name = name.replace(":", ".");
+		}
+
+		public void writeValue() throws IOException {
+			
+			FileWriter outfile =  new FileWriter(name + ".csv");
+		   
+			int count = 0;
+			
+			outfile.write("Data point");
+			outfile.write("Temperature \n");
+			
+		
+			while(count < data.size()) {
+				String num = Double.toString(data.get(count));
+				outfile.write(Integer.toString(count) + "," + num);
+				outfile.write("\n");
+				count++;
+			}
+			
+			outfile.close();
+				
+		
+		}
+
+	}
+	
 		
     public int getTime() {
 		return time;
@@ -191,9 +237,6 @@ public class LCDPlot {
 		
 	
 }
-
-
-
 
 
 
