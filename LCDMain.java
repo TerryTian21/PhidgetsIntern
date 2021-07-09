@@ -12,15 +12,12 @@ public class LCDMain {
 		
 		//First argument is the number of data points displayed at 1 time on the graph
 		LCDPlot test = new LCDPlot(12, true);
-		Record recordData = new Record();
 		
 		System.out.println("Start");
 		
 		while(true) {
 			
-			recordData.getData().add(temperatureSensor.getTemperature());
 			test.getData().add(temperatureSensor.getTemperature());
-			recordData.writeValue(); 
 			test.start();
 			Thread.sleep(350);
 		
