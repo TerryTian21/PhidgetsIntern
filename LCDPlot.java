@@ -18,7 +18,6 @@ public class LCDPlot {
 	ArrayList<Integer> pixelData = new ArrayList<Integer>();
 	DecimalFormat df = new DecimalFormat("0.0");
 	static int numPoints;
-	int counter = 0;
 	Double temp;
 	double scale;
 	double maxTemp = 0;
@@ -54,7 +53,6 @@ public class LCDPlot {
 		yScaling();
 		xScaling();
 		graph();
-		counter++;
 
 	}
 
@@ -161,15 +159,15 @@ public class LCDPlot {
 			if (count == 0)
 				outfile.write("data point, temperature \n");
 
+			if (count >= numPoints)
+				this.counter = numPoints - 1;
+
 			String num = Double.toString(data.get(this.counter));
 			outfile.write(Integer.toString(count) + "," + num);
 			outfile.write("\n");
 			count++;
 
-			if (count >= numPoints)
-				this.counter = numPoints - 1;
-			else
-				this.counter++;
+			this.counter++;
 
 			outfile.close();
 
