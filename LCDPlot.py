@@ -1,5 +1,3 @@
-# Add Phidgets Library
-
 from Phidget22.Devices.LCD import *
 import datetime
 
@@ -13,7 +11,6 @@ record = True
 
 
 class LCDPlot:
-
     name = ""
     counting = 0
     count = 0
@@ -31,6 +28,7 @@ class LCDPlot:
             currentTime = datetime.datetime.now()
             self.name = currentTime.strftime("%m_%d_%Y %H.%M.%S")
 
+    # Main function that runs all the other functions
     def start(self):
 
         if record:
@@ -41,6 +39,7 @@ class LCDPlot:
         self.xScaling()
         self.graph()
 
+    # Gets temp from temperature sensor
     @staticmethod
     def setDataPoint(num):
 
@@ -49,6 +48,7 @@ class LCDPlot:
 
         data.append(num)
 
+    # Displays elements of graph
     @staticmethod
     def display():
 
@@ -63,6 +63,7 @@ class LCDPlot:
         lcd.writeText(LCDFont.FONT_5x8, 51, 1, "Max: " + str(round(maxTemp, 2)))
         lcd.writeText(LCDFont.FONT_6x12, 101, 1, str(round(len(data) - 1)))
 
+    # Auto scales x-axis
     @staticmethod
     def xScaling():
 
@@ -72,6 +73,7 @@ class LCDPlot:
             lcd.drawLine(i, 56, i, 58)
             i += scale
 
+    # Auto scales y-axis
     @staticmethod
     def yScaling():
 
@@ -84,6 +86,7 @@ class LCDPlot:
             temp -= scale
             i += 9
 
+    # Draws the graph
     @staticmethod
     def graph():
 
@@ -108,6 +111,7 @@ class LCDPlot:
         lcd.flush()
         lcd.drawRect(21, 11, 127, 55, True, True)
 
+    # Records the temp into a file
     def writeFile(self):
 
         file = open(self.name + ".csv", "a")
