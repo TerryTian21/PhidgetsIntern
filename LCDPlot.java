@@ -50,7 +50,7 @@ public class LCDPlot {
 		if (recordData)
 			writeData.writeValue();
 
-		display(counter);
+		display();
 		yScaling();
 		xScaling();
 		graph();
@@ -69,7 +69,7 @@ public class LCDPlot {
 	}
 
 	// Displays elements of graph
-	private void display(int counter) throws PhidgetException {
+	private void display() throws PhidgetException {
 
 		// This initializes the graph axis
 		lcd.drawLine(20, 11, 20, 56);
