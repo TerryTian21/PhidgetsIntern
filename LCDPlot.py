@@ -80,7 +80,7 @@ class LCDPlot:
         temp = max(data)
         scale = ((maxTemp - minTemp) / 5)
         i = 11
-        while i < 56:
+        while i <= 56:
             lcd.drawLine(20, i, 21, i)
             lcd.writeText(LCDFont.FONT_5x8, 0, i, str(round(temp, 1)))
             temp -= scale
