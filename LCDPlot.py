@@ -59,9 +59,9 @@ class LCDPlot:
         maxTemp = max(data)
         minTemp = min(data)
 
-        lcd.writeText(LCDFont.FONT_5x8, 1, 1, "Min: " + str(round(minTemp, 2)))
-        lcd.writeText(LCDFont.FONT_5x8, 51, 1, "Max: " + str(round(maxTemp, 2)))
-        lcd.writeText(LCDFont.FONT_6x12, 101, 1, str(round(len(data) - 1)))
+        lcd.writeText(LCDFont.FONT_5x8, 1, 1, "Min: " + str(round(minTemp, 1)))
+        lcd.writeText(LCDFont.FONT_5x8, 51, 1, "Max: " + str(round(maxTemp, 1)))
+        lcd.writeText(LCDFont.FONT_6x12, 101, 1, str(round(data[len(data) - 1], 1)))
 
     # Auto scales x-axis
     @staticmethod
