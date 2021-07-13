@@ -18,8 +18,6 @@ public class LCDPlot {
 	ArrayList<Integer> pixelData = new ArrayList<Integer>();
 	DecimalFormat df = new DecimalFormat("0.0");
 	static int numPoints;
-	Double temp;
-	double scale;
 	double maxTemp = 0;
 	double minTemp = 0;
 	LCD lcd;
@@ -85,8 +83,8 @@ public class LCDPlot {
 	// Auto scales y-axis
 	private void yScaling() throws PhidgetException {
 
-		temp = Collections.max(data);
-		scale = ((maxTemp - minTemp) / 5);
+		Double temp = Collections.max(data);
+		Double scale = ((maxTemp - minTemp) / 5);
 
 		for (int i = 11; i <= 56; i += 9) {
 			lcd.drawLine(20, i, 21, i);
