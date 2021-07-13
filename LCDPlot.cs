@@ -22,9 +22,9 @@ namespace PhidgetsIntern
         public LCDPlot()
         {
 
-
         }
 
+        // Constructor that recrods data passed by user
         public LCDPlot(int dataPoints, Boolean recordData)
         {
 
@@ -38,20 +38,21 @@ namespace PhidgetsIntern
                 writeData = new Record();
         }
 
+        // Main function that runs all other functions
         public void start()
         {
 
             if (recordData)
                 writeData.writeData();
 
-            display();
-            xScaling();
-            yScaling();
-            lcd.Flush();
-            graph();
+            Display();
+            XScaling();
+            YScaling();
+            Graph();
 
         }
 
+        // Gets temp from temp sensor
         public void addDataPoint(double num)
         {
             if (data.Count() >= numPoints)
@@ -61,7 +62,8 @@ namespace PhidgetsIntern
 
         }
 
-        private void display()
+        //Displays elements of graph
+        private void Display()
         {
 
             lcd.DrawLine(20, 11, 20, 56);
@@ -77,7 +79,8 @@ namespace PhidgetsIntern
 
         }
 
-        private void xScaling()
+        // Scales x-axis
+        private void XScaling()
         {
             double temp = 107 / (numPoints - 1);
             int scale = (int)Math.Round(temp);
@@ -90,7 +93,8 @@ namespace PhidgetsIntern
 
         }
 
-        private void yScaling()
+        // Scales y-axis
+        private void YScaling()
         {
             double temp = data.Max();
             double scale = (maxTemp - minTemp) / 5;
@@ -105,8 +109,8 @@ namespace PhidgetsIntern
 
         }
 
-
-        private void graph()
+        //Draws the graph
+        private void Graph()
         {
             double temp = (107/(numPoints -1));
             double size = maxTemp - minTemp;
@@ -140,7 +144,7 @@ namespace PhidgetsIntern
 
     }
 
-
+    // Records temp into a file
     class Record : LCDPlot{
 
         String name;
@@ -162,7 +166,7 @@ namespace PhidgetsIntern
 
             if (count == 0)
                 sw.WriteLine("data points, temperature");
-            
+
             if (count >= numPoints)
                 counter = numPoints - 1;
 
