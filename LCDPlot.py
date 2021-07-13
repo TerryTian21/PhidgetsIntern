@@ -2,10 +2,10 @@ from Phidget22.Devices.LCD import *
 import datetime
 
 data = []
-pixelData = []
-numPoints = 0
-maxTemp = 0
-minTemp = 0
+pixel_data = []
+num_points = 0
+max_temp = 0
+min_temp = 0
 lcd = LCD()
 record = True
 
@@ -20,8 +20,8 @@ class LCDPlot:
 
         lcd.openWaitForAttachment(1000)
 
-        global record, numPoints
-        numPoints = dataPoints
+        global record, num_points
+        num_points = dataPoints
         record = recordData
 
         if record:
@@ -32,18 +32,18 @@ class LCDPlot:
     def start(self):
 
         if record:
-            self.writeFile()
+            self.write_file()
 
         self.display()
-        self.yScaling()
-        self.xScaling()
+        self.y_scaling()
+        self.x_scaling()
         self.graph()
 
     # Gets temp from temperature sensor
     @staticmethod
-    def setDataPoint(num):
+    def set_data_point(num):
 
-        if len(data) >= numPoints:
+        if len(data) >= num_points:
             data.pop(0)
 
         data.append(num)
@@ -55,19 +55,19 @@ class LCDPlot:
         lcd.drawLine(20, 11, 20, 56)
         lcd.drawLine(20, 56, 127, 56)
 
-        global maxTemp, minTemp
-        maxTemp = max(data)
-        minTemp = min(data)
+        global max_temp, min_temp
+        max_temp = max(data)
+        min_temp = min(data)
 
-        lcd.writeText(LCDFont.FONT_5x8, 1, 1, "Min: " + str(round(minTemp, 1)))
-        lcd.writeText(LCDFont.FONT_5x8, 51, 1, "Max: " + str(round(maxTemp, 1)))
+        lcd.writeText(LCDFont.FONT_5x8, 1, 1, "Min: " + str(round(min_temp, 1)))
+        lcd.writeText(LCDFont.FONT_5x8, 51, 1, "Max: " + str(round(max_temp, 1)))
         lcd.writeText(LCDFont.FONT_6x12, 101, 1, str(round(data[len(data) - 1], 1)))
 
     # Auto scales x-axis
     @staticmethod
-    def xScaling():
+    def x_scaling():
 
-        scale = round(107 / (numPoints - 1))
+        scale = round(107 / (num_points - 1))
         i = 20 + scale
         while i < 127:
             lcd.drawLine(i, 56, i, 58)
@@ -75,10 +75,10 @@ class LCDPlot:
 
     # Auto scales y-axis
     @staticmethod
-    def yScaling():
+    def y_scaling():
 
         temp = max(data)
-        scale = ((maxTemp - minTemp) / 5)
+        scale = ((max_temp - min_temp) / 5)
         i = 11
         while i <= 56:
             lcd.drawLine(20, i, 21, i)
@@ -90,37 +90,37 @@ class LCDPlot:
     @staticmethod
     def graph():
 
-        size = maxTemp - minTemp
-        scale = round(107 / (numPoints - 1))
+        size = max_temp - min_temp
+        scale = round(107 / (num_points - 1))
 
         if size == 0:
             size = 2
 
         for i in range(len(data)):
-            pixel = 56 - (data[i] - minTemp) / size * 45
-            pixelData.append(round(pixel))
+            pixel = 56 - (data[i] - min_temp) / size * 45
+            pixel_data.append(round(pixel))
 
         temp2 = 20
 
         for i in range(len(data)):
             if i > 0:
-                lcd.drawLine(temp2 - scale, pixelData[i - 1], temp2, pixelData[i])
+                lcd.drawLine(temp2 - scale, pixel_data[i - 1], temp2, pixel_data[i])
             temp2 += scale
 
-        pixelData.clear()
+        pixel_data.clear()
         lcd.flush()
         lcd.drawRect(21, 11, 127, 55, True, True)
 
     # Records the temp into a file
-    def writeFile(self):
+    def write_file(self):
 
         file = open(self.name + ".csv", "a")
 
         if self.count == 0:
             file.write("data points" + "," + "temperature \n")
 
-        if self.counting >= numPoints:
-            self.counting = numPoints - 1
+        if self.counting >= num_points:
+            self.counting = num_points - 1
 
         file.write(str(self.count) + "," + str(data[self.counting]) + "\n")
         self.count += 1
