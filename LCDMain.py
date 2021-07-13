@@ -1,5 +1,6 @@
 # Adding Phidgets Library
 from Phidget22.Devices.TemperatureSensor import *
+
 # Importing libraries used in program
 from LCDPlot import LCDPlot
 import time
