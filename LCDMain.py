@@ -14,7 +14,7 @@ temperatureSensor.openWaitForAttachment(1000)
 # Creating a new object which will plot the data from the temperature sensor
 # First argument is the number of data points displayed at 1 time on the graph
 # Second argument is whether user wants to record from sensor to a file
-test = LCDPlot(10, True)
+graph = LCDPlot(10, True)
 
 # Indication that program has started
 print("Start")
@@ -22,6 +22,6 @@ print("Start")
 # Continuous loop which collects the temperature every 250 milliseconds
 # Data is then passed to the test class and graphed/logged in file
 while True:
-    test.setDataPoint(temperatureSensor.getTemperature())
-    test.start()
+    graph.setDataPoint(temperatureSensor.getTemperature())
+    graph.start()
     time.sleep(.250)
