@@ -15,7 +15,7 @@ public class LCDMain {
 		//Creating a new object which will plot the data from the temperature sensor
 		// First argument is the number of data points displayed at 1 time on the graph
 		// Second argument is whether user wants to record data from sensor to a file
-		LCDPlot test = new LCDPlot(12, true);
+		LCDPlot graph = new LCDPlot(12, true);
 
 		//Indication that program has started
 		System.out.println("Start");
@@ -25,8 +25,8 @@ public class LCDMain {
 		//Data is then passed to the test class and graphed/logged in file
 		while (true) {
 
-			test.addDataPoint(temperatureSensor.getTemperature());
-			test.start();
+			graph.addDataPoint(temperatureSensor.getTemperature());
+			graph.start();
 			Thread.sleep(250);
 		}
 
