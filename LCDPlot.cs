@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -114,8 +114,6 @@ namespace PhidgetsIntern
 
             if (size == 0)
                 size = 2;
-
-            Console.WriteLine(data.Count);
 
             for (int i =0; i<data.Count; i++)
             {
