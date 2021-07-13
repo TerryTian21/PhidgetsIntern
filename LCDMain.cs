@@ -5,7 +5,7 @@ using Phidget22;
 using System;
 using System.Threading;
 
-namespace PhidgetsIntern
+namespace TemperatureGraph
 
 {
 
