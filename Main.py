@@ -1,21 +1,26 @@
+# Adding Phidgets Library
 from Phidget22.Devices.TemperatureSensor import *
+# Importing libraries used in program
 from LCDPlot import LCDPlot
 import time
 
+# Create temperature sensor
+temperatureSensor = TemperatureSensor()
 
-def main():
-    temperatureSensor = TemperatureSensor()
-    temperatureSensor.openWaitForAttachment(1000)
+# Open
+temperatureSensor.openWaitForAttachment(1000)
 
-    test = LCDPlot(10, True)
+# Creating a new object which will plot the data from the temperature sensor
+# First argument is the number of data points displayed at 1 time on the graph
+# Second argument is whether user wants to record from sensor to a file
+test = LCDPlot(10, True)
 
-    print("start")
+# Indication that program has started
+print("start")
 
-    while True:
-        test.setDataPoint(temperatureSensor.getTemperature())
-        test.start()
-        time.sleep(.250)
-
-
-if __name__ == '__main__':
-    main()
+# Continuous loop which collects the temperature every 250 milliseconds
+# Data is then passed to the test class and graphed/logged in file
+while True:
+    test.setDataPoint(temperatureSensor.getTemperature())
+    test.start()
+    time.sleep(.250)
