@@ -17,7 +17,7 @@ temperatureSensor.openWaitForAttachment(1000)
 test = LCDPlot(10, True)
 
 # Indication that program has started
-print("start")
+print("Start")
 
 # Continuous loop which collects the temperature every 250 milliseconds
 # Data is then passed to the test class and graphed/logged in file
