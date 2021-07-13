@@ -2,8 +2,8 @@
 using Phidget22;
 
 // Import Libraries used in Program
-using System*;
-
+using System;
+using System.Threading;
 
 namespace PhidgetsIntern
 
