@@ -40,17 +40,18 @@ class LCDPlot:
         self.graph()
 
     # Gets temp from temperature sensor
-    @staticmethod
-    def set_data_point(num):
+
+    def set_data_point(self,num):
 
         if len(data) >= num_points:
             data.pop(0)
 
         data.append(num)
+        self.start()
 
     # Displays elements of graph
-    @staticmethod
-    def display():
+
+    def display(self):
 
         lcd.drawLine(20, 11, 20, 56)
         lcd.drawLine(20, 56, 127, 56)
@@ -64,8 +65,8 @@ class LCDPlot:
         lcd.writeText(LCDFont.FONT_6x12, 101, 1, str(round(data[len(data) - 1], 1)))
 
     # Auto scales x-axis
-    @staticmethod
-    def x_scaling():
+
+    def x_scaling(self):
 
         scale = round(107 / (num_points - 1))
         i = 20 + scale
@@ -74,8 +75,8 @@ class LCDPlot:
             i += scale
 
     # Auto scales y-axis
-    @staticmethod
-    def y_scaling():
+
+    def y_scaling(self):
 
         temp = max(data)
         scale = ((max_temp - min_temp) / 5)
@@ -87,8 +88,8 @@ class LCDPlot:
             i += 9
 
     # Draws the graph
-    @staticmethod
-    def graph():
+
+    def graph(self):
 
         size = max_temp - min_temp
         scale = round(107 / (num_points - 1))
