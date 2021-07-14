@@ -24,6 +24,8 @@ class LCDPlot:
         self.num_points = dataPoints
         self.record = record_data
 
+        # Initializes the name of the file with date and time
+        # Can't title files with "/" or ":" so they are replaced by "_" and "."
         if self.record:
             currentTime = datetime.datetime.now()
             self.name = currentTime.strftime("%m_%d_%Y %H.%M.%S")
@@ -131,7 +133,7 @@ class LCDPlot:
         # new data point is added
         self.lcd.drawRect(21, 11, self.LCD_WIDTH, 55, True, True)
 
-    # self.self.records the temp into a file
+    # Records the temp into a file
     def write_file(self):
 
         # Creates a file writer to the csv file
