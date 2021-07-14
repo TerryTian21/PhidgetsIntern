@@ -183,7 +183,7 @@ public class LCDPlot {
 			if (count >= numPoints)
 				this.counter = numPoints - 1;
 
-			// Writes data point number and data value to ecel file
+			// Writes data point number and data value to excel file
 			String num = Double.toString(data.get(this.counter));
 			outfile.write(Integer.toString(count) + "," + num + "\n");
 
