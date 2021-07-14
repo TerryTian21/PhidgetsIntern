@@ -178,8 +178,7 @@ public class LCDPlot {
 
 			// Count keeps track of what data point we are on | If count exceeds the total
 			// numPoints (i.e. the number of points present in the data array) then we
-			// control counter
-			// (the index on the most recent data point in the array) to be the last element
+			// control counter (the index on the most recent data point in the array) to be the last element
 			// in the array
 			if (count >= numPoints)
 				this.counter = numPoints - 1;
