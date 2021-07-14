@@ -5,7 +5,7 @@ using Phidget22;
 using System;
 using System.Threading;
 
-namespace TemperatureGraph
+namespace PhidgetsIntern
 
 {
 
@@ -30,14 +30,12 @@ namespace TemperatureGraph
             //Indication that program has started
             Console.WriteLine("Start");
 
-
             // Continuous loop which collects the temperature every 250 milliseconds
             // Data is then passed to the test class and graphed/logged in a file
             while (true)
             {
                 graph.addDataPoint(temperatureSensor.Temperature);
-                graph.start();
-                Thread.Sleep(250);
+                Thread.Sleep(temperatureSensor.DataInterval);
 
             }
         }
