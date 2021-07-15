@@ -108,8 +108,7 @@ public class WinBuilder {
 
 			@Override
 			public void onDetach(DetachEvent e) {
-
-				System.out.println("Hello");
+				
 				btnNewButton.setEnabled(false);
 
 			}
